@@ -1,21 +1,25 @@
 package pnj.latihan.latihanprojectti6;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnPindah;
+    Button btnPindah, actionBukaWeb;
+    TextView txtPesan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,23 +27,40 @@ public class MainActivity extends AppCompatActivity {
         Log.e("Proses : ", "onCreate");
         setContentView(R.layout.activity_main);
         setTitle("Hallo");
+        txtPesan = findViewById(R.id.txtPesan);
         btnPindah = findViewById(R.id.btnPindah);
         btnPindah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // event click
-//               pindah();
-                tampilkanDialog();
+                pindah();
+//                tampilkanDialog();
+            }
+        });
+        actionBukaWeb = findViewById(R.id.actionBukaWeb);
+        actionBukaWeb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bukaWeb();
             }
         });
     }
 
-    void pindah(){
-        Intent intent = new Intent(this, Halaman2.class);
+    void bukaWeb() {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://google.com"));
         startActivity(intent);
     }
 
-    void tampilkanDialog(){
+    void pindah() {
+        Intent intent = new Intent(this, Halaman3activity.class);
+        intent.putExtra("data_satu", "Ini data Dari Halaman MainActivity");
+        intent.putExtra("data_dua", 10);
+
+//        startActivity(intent);
+        startActivityForResult(intent, 100);
+    }
+
+    void tampilkanDialog() {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage("Halo Apa Kabar?");
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -61,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    void tampilkanToast(){
-        Toast.makeText(this,"Cancel",Toast.LENGTH_SHORT).show();
+    void tampilkanToast() {
+        Toast.makeText(this, "Cancel", Toast.LENGTH_SHORT).show();
     }
 
     void tampilkanProgressDialog() {
@@ -77,7 +98,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 3000L);
     }
-
 
 
     @Override
@@ -114,5 +134,18 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.e("Proses : ", "onDestroy");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == 100) {
+                Bundle extras = data.getExtras();
+                String msg = extras.getString("data_terima", "");
+                txtPesan.setText(msg);
+            }
+        }
     }
 }
