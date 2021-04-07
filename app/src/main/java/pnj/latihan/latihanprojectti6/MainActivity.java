@@ -4,7 +4,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -13,12 +15,17 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnPindah, actionBukaWeb;
+    Button btnPindah, actionBukaWeb,actionTanggal,actionJam;
     TextView txtPesan;
 
     @Override
@@ -28,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle("Hallo");
         txtPesan = findViewById(R.id.txtPesan);
+        actionTanggal = findViewById(R.id.actionTanggal);
+        actionJam = findViewById(R.id.actionJam);
+
         btnPindah = findViewById(R.id.btnPindah);
         btnPindah.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +52,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 bukaWeb();
+            }
+        });
+
+        actionJam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pilihJam();
+            }
+        });
+
+        actionTanggal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pilihTanggal();
             }
         });
     }
@@ -148,4 +172,40 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    Calendar calendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+            calendar.set(Calendar.MONTH,month);
+
+            txtPesan.setText(simpleDateFormat.format(calendar.getTime()));
+
+        }
+    };
+
+    TimePickerDialog.OnTimeSetListener timePicker = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            txtPesan.setText(simpleDateFormat.format(calendar.getTime()));
+        }
+    };
+
+    void pilihTanggal() {
+        new DatePickerDialog(this,datePicker,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
+    }
+
+    void pilihJam() {
+        new TimePickerDialog(this,timePicker,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),true).show();
+    }
+
+
 }

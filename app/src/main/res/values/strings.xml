@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Latihan Project TI 6</string>
+    <string name="str_btn">Hallo</string>
 </resources>
