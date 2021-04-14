@@ -2,23 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pnj.latihan.latihanprojectti6">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.LatihanProjectTI6"
-        >
-        <activity android:name=".Halaman3activity"></activity>
-        <activity android:name=".Halaman2"></activity>
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.LatihanProjectTI6">
+        <activity android:name=".LatihanListView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".Halaman3activity" />
+        <activity android:name=".Halaman2" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
